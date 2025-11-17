@@ -122,7 +122,16 @@ def _book_exists(book_id: int) -> bool:
 
 def _add_borrower(name: str, phone: str | None, email: str | None) -> int:
     borrowers = get_collection("borrowers")
-    # tự tăng borrower_id = max hiện tại + 1
+    conditions = []
+    if phone:
+        conditions.append({"phone": phone})
+    if email:
+        conditions.append({"email": email})
+
+    if conditions:
+        existing = borrowers.count_documents({"$or": conditions})
+        if existing > 0:
+            raise Exception("SĐT hoặc Email đã tồn tại, vui lòng kiểm tra lại.")
     last = borrowers.find_one(sort=[("borrower_id", -1)])
     new_id = int(last["borrower_id"]) + 1 if last else 1
     doc = {
@@ -133,15 +142,28 @@ def _add_borrower(name: str, phone: str | None, email: str | None) -> int:
     }
     borrowers.insert_one(doc)
     return new_id
-
+    
 
 def _update_borrower(bid: int, name: str, phone: str | None, email: str | None):
     borrowers = get_collection("borrowers")
+    conditions = []
+    if phone:
+        conditions.append({"phone": phone})
+    if email:
+        conditions.append({"email": email})
+
+    if conditions:
+        existing = borrowers.count_documents({
+            "borrower_id": {"$ne": bid},
+            "$or": conditions
+        })
+        if existing > 0:
+            raise Exception("SĐT hoặc Email đã được dùng bởi độc giả khác.")
+
     borrowers.update_one(
         {"borrower_id": bid},
         {"$set": {"name": name, "phone": phone, "email": email}},
     )
-
 
 def _delete_borrower(bid: int):
     """
