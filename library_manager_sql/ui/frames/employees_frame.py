@@ -41,7 +41,7 @@ class EmployeesFrame(tk.Frame):
         self.create_buttons()
         self.load_data()
 
-    # ================= UI PHẦN TÌM KIẾM =================
+    # UI Tìm kiếm 
     def create_search_frame(self):
         frame = tk.Frame(self, bg="white")
         frame.pack(fill="x", padx=10)
@@ -66,7 +66,7 @@ class EmployeesFrame(tk.Frame):
             command=self.load_data,
         ).pack(side="left", padx=3)
 
-    # ================= BẢNG DỮ LIỆU =================
+    # table data
     def create_table(self):
         columns = (
             "id",
@@ -100,7 +100,7 @@ class EmployeesFrame(tk.Frame):
 
         self.tree.pack(fill="both", expand=True, padx=10, pady=10)
 
-    # ================= CÁC NÚT CHỨC NĂNG =================
+    # các nút chức năngnăng
     def create_buttons(self):
         frame = tk.Frame(self, bg="white")
         frame.pack(pady=5)
@@ -126,7 +126,7 @@ class EmployeesFrame(tk.Frame):
                 state=state,
             ).pack(side="left", padx=5)
 
-    # ================= TIỆN ÍCH CHUNG =================
+    # đổ dữ liệu vào Tree ViewView
     @staticmethod
     def _clean(value):
         if value is None:
@@ -177,7 +177,7 @@ class EmployeesFrame(tk.Frame):
                 ),
             )
 
-    # ================= LOAD & TÌM KIẾM =================
+    # load and tìm kiếm 
     def load_data(self):
         try:
             col = get_collection("employees")
@@ -201,7 +201,7 @@ class EmployeesFrame(tk.Frame):
         except Exception as e:
             messagebox.showerror("Lỗi", f"Lỗi khi tìm kiếm:\n{e}")
 
-    # ================= THÊM NHÂN VIÊN =================
+    # add_employee
     def add_employee(self):
         form = tk.Toplevel(self)
         form.title("Thêm nhân viên")
@@ -309,7 +309,7 @@ class EmployeesFrame(tk.Frame):
             command=form.destroy,
         ).place(x=240, y=460)
 
-    # ================= SỬA NHÂN VIÊN =================
+    # edit employeeemployee
     def edit_employee(self):
         selected = self.tree.selection()
         if not selected:
@@ -446,7 +446,7 @@ class EmployeesFrame(tk.Frame):
             command=form.destroy,
         ).place(x=240, y=460)
 
-    # ================= XÓA NHÂN VIÊN =================
+    # delete employeeemployee
     def delete_employee(self):
         selected = self.tree.selection()
         if not selected:
@@ -468,7 +468,7 @@ class EmployeesFrame(tk.Frame):
         except Exception as e:
             messagebox.showerror("Lỗi", f"Lỗi khi xóa:\n{e}")
 
-    # ================= KIỂM TRA LỊCH HÔM NAY =================
+    #check today
     def check_today(self):
         """Xem hôm nay có những ai có lịch làm (dựa trên schedule_days)."""
         try:
