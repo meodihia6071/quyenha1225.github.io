@@ -2,7 +2,9 @@
 import random
 from datetime import datetime, timedelta
 from database.db import get_collection
+import time
 
+start = time.time()
 def seed_borrowers_books_employees():
     borrowers_col = get_collection("borrowers")
     books_col = get_collection("books")
@@ -135,3 +137,6 @@ if __name__ == "__main__":
         print("Seed hoàn tất!")
     else:
         print("Hủy seed. Dữ liệu cũ được giữ nguyên.")
+        
+end = time.time()
+print("run time:", end - start, "second")
